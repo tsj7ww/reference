@@ -1,0 +1,29 @@
+job:
+  name: Process Name
+  id: process_id
+  type: etl | report | model
+  intent: Process intent description.
+  schedule: 00 09 * * *
+  platform: computing platform name
+  artifacts: location/of/artifacts
+owner:
+  name: Owner Name
+  id: user_id
+  email: user_email@domain.com
+stakeholders:
+  - name: Person Name
+  email: email@email.com
+assets:
+  inputs:
+    - files
+  outputs:
+    - sql table
+  aws:
+    - lambda
+    - dynamo db
+changes:
+  2020-09-01:
+    requestor: me
+    modifier: me
+    reviewer: me
+    purpose: init
