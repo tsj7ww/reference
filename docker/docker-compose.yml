@@ -1,0 +1,21 @@
+version: "3.8"
+services:
+  test-a:
+    build:
+      context: . # dir with Dockerfile OR git repo url
+      dockerfile: Dockerfile
+    image: test:a
+    environment:
+      MESSAGE: "hello world"
+      FNAME: "test-a.py"
+  test-b:
+    build:
+      context: . # dir with Dockerfile OR git repo url
+      dockerfile: Dockerfile
+    image: test:b
+    environment:
+      MESSAGE: "hello world"
+      FNAME: "test-b.py"
+
+# docker-compose build
+# docker-compose run <APP_NAME>
