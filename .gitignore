@@ -1,11 +1,11 @@
 # custom
 .ipynb_checkpoints/
 __pycache/
-.pyc
-.csv
-.parquet
-.dat
-.pdf
+*.pyc
+*.csv
+*.parquet
+*.dat
+*.pdf
 
 
 
@@ -122,7 +122,7 @@ celerybeat.pid
 # Environments
 .env
 .venv
-env/
+#env/
 venv/
 ENV/
 env.bak/
