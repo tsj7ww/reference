@@ -13,11 +13,13 @@ def LOGGER(env):
         raise Exception('Unknown environment.')
 
     _str = io.StringIO()
+    _fmt = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
     _handler = logging.StreamHandler(_str)
     _log = logging.getLogger()
 
     _log.setLevel(_lvl)
-    _handler.setFormatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    _handler.setFormatter(_fmt)
+    _handler.setLevel(_lvl)
     _log.addHandler(_handler)
 
     return _log,_str
