@@ -1,25 +1,49 @@
 import logging
 import io
+import sys
+
+def LOGGER(handler=None,format=None,level=None):
+    """"""
+    l = logging.getLogger(__name__)
+
+    if not format:
+        f = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+        format = logging.Formatter(f)
+    if not handler:
+        feed = io.String()
+        handler = logging.StreamHandler(feed)
+    if not level:
+        level = logging.DEBUG
+
+    handler.setFormatter(format)
+    handler.setLevel(lvl)
+    l.addHandler(handler)
+    l.setLevel(lvl)
+
+    return l,feed
+
 
 def LOGGER(env):
     """"""
+    f = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    l = logging.getLogger(__name__)
+
     if env=='dev':
-        _lvl = logging.DEBUG
+        lvl = logging.DEBUG
+        s = None
+        h = logging.StreamHandler(sys.stdout)
     elif env=='qa':
-        _lvl = logging.WARNING
+        lvl = logging.WARNING
+        s = io.StringIO()
+        h = logging.StreamHandler(s)
     elif env=='prod':
-        _lvl = logging.ERROR
+        lvl = logging.ERROR
+        s = io.StringIO()
+        h = logging.StreamHandler(s)
     else:
         raise Exception('Unknown environment.')
 
-    _str = io.StringIO()
-    _fmt = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-    _handler = logging.StreamHandler(_str)
-    _log = logging.getLogger()
-
-    _log.setLevel(_lvl)
-    _handler.setFormatter(_fmt)
-    _handler.setLevel(_lvl)
-    _log.addHandler(_handler)
-
-    return _log,_str
+    h.setFormatter(f)
+    h.setLevel(lvl)
+    l.addHandler(h)
+    l.setLevel(lvl)
