@@ -1,15 +1,30 @@
+############
+### ARCH ###
+############
+ARCH() {
+  #!/bin/bash
+  tar -cjf /store/bak/pacman-database.tar.bz2 /var/lib/pacman/local
+  pacman -Rscn $(pacman -Qtdq)
+  pacman -Sc
+  pacman-optimize && sync
+  updatedb
+
+  exit 0
+}
+
 ##############
 ### DEBIAN ###
 ##############
-# aptitude
-aptitude update
-aptitude full-upgrade
-# apt
-sudo apt update -y
-sudo apt-get dist-upgrade -y
-sudo apt autoremove
-# list packages
-dpkg-query -Wf '${Installed-Size}\t${Package}\n' | sort -n | tail 20
+DEBIAN() {
+  aptitude update
+  aptitude full-upgrade
+  # apt
+  sudo apt update -y
+  sudo apt-get dist-upgrade -y
+  sudo apt autoremove
+  # list packages
+  dpkg-query -Wf '${Installed-Size}\t${Package}\n' | sort -n | tail 20
+}
 
 ##############
 ### FEDORA ###

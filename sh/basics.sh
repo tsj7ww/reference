@@ -1,3 +1,49 @@
+########################
+### Missing Semester ###
+########################
+foo=bar # foo = bar won't work - spaces split arguments in shell
+echo "Value is $foo"
+echo 'Values is $foo' # literal
+mcd () {
+  mkdir -p "$1"
+  cd "$1"
+}
+source filename.sh # creates vars
+echo $_ # previous last argument
+!! # previous line
+$? # error value of previous line - 1 = False = Error
+false || echo "print this" # do 1st command if true, else do 2nd
+true || echo "not printed"
+true && echo "print this"
+false && echo "not printed"
+echo "cmd 1"; echo "cmd 2"
+foo=$(pwd)
+echo "we are in $foo = $(pwd)"
+cat <(ls) <(ls ..) # multiple arguments
+$0 # name of script
+$# # number of arguments
+$$ # process id of current process
+$@ # expands to all of the ags - like *args
+grep foobar "hellfoorbaro" > /dev/null 2> /dev/null # redirect output to null
+ls *.sh # match any char
+touch hello.{txt,md} # run multiple options
+diff $1 $2 # find the difference between two inputs
+python file.py # 1st line > #!/usr/bin/env python -> specify path for interpretation
+shellcheck shellfile.sh # checks for shell issues
+man zip # gives manual of shell tools
+find /dir/ -name src -type d -exec execute this # find src dirs in /dir and below
+fd ".*py" # find shortened
+locate tsj7ww # finds dirs with that name
+grep foobar mcd.sh
+grep -R foodbar /dir/ # recursive
+rg "import requests" -t py -c 5 /dir/ # 5 lines of context
+rg -u --files-without-match "^#\!" -t sh
+tree /dir/ # visual tree rep of dirs
+broot  # gives condensed, interactive directory listings
+nnn # very interactive folder navigation
+alias name="command" # create command with input varname
+
+
 ###########
 ### GIT ###
 ###########
@@ -42,6 +88,43 @@ git reflog
 # Checking commits
 git log
 
+
+#############
+### RegEx ###
+#############
+# cheatsheet - https://staff.washington.edu/weller/grep.html
+# basics
+
+
+
+############
+### GREP ###
+############
+# cheatsheet - https://staff.washington.edu/weller/grep.html
+# basics
+grep 'word' filename
+fgrep 'word-to-search' file.txt
+grep 'word' file1 file2 file3
+grep 'string1 string2'  filename
+cat otherfile | grep 'something'
+command | grep 'something'
+command option1 | grep 'data'
+grep --color 'data' fileName
+grep [-options] pattern filename
+fgrep [-options] words file
+# options
+grep -r "192.168.1.5" /etc/ # recursive
+grep -h "192.168.1.5" /etc/ # no file names
+grep -w "boo" file # words
+grep -i 'bar' /path/to/file# ignore case
+# invert
+grep -v bar /path/to/file
+grep -v '^root' /etc/passwd
+# colors
+GREP_COLOR='1;35' grep --color=always 'vivek' /etc/passwd
+GREP_COLOR='1;32' grep --color=always 'vivek' /etc/passwd
+GREP_COLOR='1;37' grep --color=always 'root' /etc/passwd
+GREP_COLOR='1;36' grep --color=always nobody /etc/passwd
 
 ###########
 ### AWK ###
@@ -456,40 +539,3 @@ git log
  sed 's/^> //'
  # remove most HTML tags (accommodates multiple-line tags)
  sed -e :a -e 's/<[^>]*>//g;/</N;//ba'
-
-
-############
-### GREP ###
-############
-# cheatsheet - https://staff.washington.edu/weller/grep.html
-# basics
-grep 'word' filename
-fgrep 'word-to-search' file.txt
-grep 'word' file1 file2 file3
-grep 'string1 string2'  filename
-cat otherfile | grep 'something'
-command | grep 'something'
-command option1 | grep 'data'
-grep --color 'data' fileName
-grep [-options] pattern filename
-fgrep [-options] words file
-# options
-grep -r "192.168.1.5" /etc/ # recursive
-grep -h "192.168.1.5" /etc/ # no file names
-grep -w "boo" file # words
-grep -i 'bar' /path/to/file# ignore case
-# invert
-grep -v bar /path/to/file
-grep -v '^root' /etc/passwd
-# colors
-GREP_COLOR='1;35' grep --color=always 'vivek' /etc/passwd
-GREP_COLOR='1;32' grep --color=always 'vivek' /etc/passwd
-GREP_COLOR='1;37' grep --color=always 'root' /etc/passwd
-GREP_COLOR='1;36' grep --color=always nobody /etc/passwd
-
-
-#############
-### RegEx ###
-#############
-# cheatsheet - https://staff.washington.edu/weller/grep.html
-# basics

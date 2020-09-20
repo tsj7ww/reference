@@ -39,4 +39,4 @@ main() # run functions
 }
 
 # run main
-$(main)
+main
