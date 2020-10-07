@@ -3,7 +3,7 @@ import yaml
 
 def METADATA(env):
     """Metadata JSON template."""
-    _meta = {
+    meta = {
         "job": {
             "name": "Job Name"
             "id": "job_nm",
@@ -35,11 +35,11 @@ def METADATA(env):
             }
         }
     }
-return _meta
+return meta
 
 def REGISTRATION():
     """Data registration JSON template."""
-    _reg = {
+    reg = {
         "0": {
             "name": "",
             "desc": "",
@@ -69,4 +69,4 @@ def REGISTRATION():
             "default": ""
         }
     }
-    return _reg
+    return reg

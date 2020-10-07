@@ -58,69 +58,67 @@ class Ping:
             raise Exception('Unable to send message: {}'.format(str(e)))
 
 
+def HI_BYE(name):
+    """"""
+    hr = datetime.datetime.now().hour
+    if hr < 12:
+        header = 'Good Morning,<br><br>'
+    elif (hr >= 12) & (hr < 5):
+        header = 'Good Afternoon,<br><br>'
+    elif hr > 5:
+        header = 'Good Evening,<br><br>'
+    else:
+        header = 'Hello,<br><br>'
+    footer = '<br><br>Thanks,<br>{SENDER}'.format(SENDER=name)
+    body = ''
+
+    return (header+'{BODY}'+footer)
+
 def BODY(data):
     """"""
-    _hr = datetime.datetime.now().hour
-    if _hr < 12:
-        _header = 'Good Morning,<br><br>'
-    elif (_hr >= 12) & (_hr < 5):
-        _header = 'Good Afternoon,<br><br>'
-    elif _hr > 5:
-        _header = 'Good Evening,<br><br>'
-    else:
-        _header = 'Hello,<br><br>'
-    _footer = '<br><br>Thanks,<br>{SENDER}'.format(SENDER=sender)
-    _body = 'Here are today\'s job postings:<br><br>'
-    _template = '<li><a href=\'{URL}\'>{TITLE} at {COMPANY} in {CITY}, {STATE}</li>'
+    body = ''
+    template = '{}'
+    
+    for d in data:
+        body+=template.format(d)
 
-    _groups = []
-    [_groups.append((i['q_title'],i['q_location'])) for i in data if (i['q_title'],i['q_location']) not in _groups]
-    for i in _groups:
-        _row = '<b>{TTL} in {LOC}</b><br><ul>'.format(TTL=i[0],LOC=i[1])
-        for j in data:
-            if i==(j['q_title'],j['q_location']):
-                _row+=_template.format(URL=j['url_post'],TITLE=j['title'],COMPANY=j['company'],CITY=j['city'],STATE=j['state'])
-        _body+=(_row+'</ul>')
-    return _body
+    return body
 
-def REPORT(content,fname,name,sender,stakeholders,server):
+def REPORT(files,name,sender,stakeholders,server):
+    """
+    files = [(string content,fname)]
+    """
+    body = 'Please review the file attached and reach out with questions.'
+    subject = 'File Attached: {}'.format(name)
+    cfg = {'Subject': subject, 'From': owner, 'To': stakeholders}
+
+    msg = MIMEMultipart()
+    for k,v in cfg.items():
+        msg[k] = v
+    msg.attach(MIMEText(body), subtype='plain')
+
+    for file in files:
+        attach = MIMEApplication(file[0],Name=file[1])
+        attach['Content-Disposition'] = 'attachment; filename={}'.format(file[1])
+        msg.attach(attach)
+
+    with smtplib.SMTP(server) as svr:
+        svr.send_message(msg)
+
+def ALERT(name,sender,recipients,server,success=False,body=None):
     """"""
-    _body = 'Please review the file attached and reach out with questions.'
-    _subject = 'File Attached: {}'.format(name)
-    _cfg = {'Subject': _subject, 'From': owner, 'To': stakeholders}
-
-    _msg = MIMEMultipart()
-    for k,v in _cfg.items():
-        _msg[k] = v
-    _msg.attach(MIMEText(_body), subtype='plain')
-
-    _a = MIMEApplication(content,Name=fname)
-    _a['Content-Disposition'] = 'attachment; filename={}'.format(fname)
-    _msg.attach(_a)
-
-    with smtplib.SMTP(server) as s:
-        s.send_message(_msg)
-
-def ALERT(body,name,sender,recipients,server,port,pwd,success=False):
-    """
-    local host server email
-    """
+    cfg = {'From': sender, 'To': recipients}
+    subject = 'Job {}: {}'
     if success:
-        _msg = {
-            'Subject': 'Successful Run: '+name
-            ,'From': sender
-            ,'To': recipients
-        }
+        msg['Subject'] = subject.format('Success', name)
     else:
-        _msg = {
-            'Subject': 'Job Failure: '+name
-            ,'From': sender
-            ,'To': sender
-        }
-    msg = EmailMessage()
-    for i,j in _msg.items():
-        msg[i] = j
-    msg.set_content(body,subtype='plain')
+        msg['Subject'] = subject.format('Failure', name)
 
-    with smtplib.SMTP(server,port) as s:
-        s.send_message(msg)
+    msg = EmailMessage()
+    for k,v in cfg.items():
+        msg[k] = v
+    if body:
+        msg.set_content(body,subtype='plain')
+
+    with smtplib.SMTP(server,port) as svr:
+        svr.send_message(msg)
