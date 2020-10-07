@@ -87,12 +87,17 @@ git blame filename.ext
 git reflog
 # Checking commits
 git log
+# git diff
+git diff <path>
+git diff --cached <path>
+git diff HEAD <path>
+git diff HEAD^ HEAD <path>
 
 
 #############
 ### RegEx ###
 #############
-# cheatsheet - https://staff.washington.edu/weller/grep.html
+# cheatsheet - https://www.rexegg.com/regex-quickstart.html
 # basics
 
 
